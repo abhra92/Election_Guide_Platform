@@ -114,41 +114,101 @@ body {
 }
 
 
-/* Typography styles based on Shopify design */
+/* Typography styles based on Shopify design - Mobile Responsive */
 .text-display-xl {
   font-family: var(--font-display);
-  font-size: 96px;
+  font-size: 48px;
   font-weight: 330;
   line-height: 1.00;
+}
+
+@media (min-width: 640px) {
+  .text-display-xl {
+    font-size: 70px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-display-xl {
+    font-size: 96px;
+  }
 }
 
 .text-heading-1 {
   font-family: var(--font-display);
-  font-size: 70px;
+  font-size: 40px;
   font-weight: 330;
   line-height: 1.00;
 }
 
+@media (min-width: 640px) {
+  .text-heading-1 {
+    font-size: 55px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-heading-1 {
+    font-size: 70px;
+  }
+}
+
 .text-heading-2 {
   font-family: var(--font-display);
-  font-size: 55px;
+  font-size: 32px;
   font-weight: 330;
   line-height: 1.16;
 }
 
+@media (min-width: 640px) {
+  .text-heading-2 {
+    font-size: 44px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-heading-2 {
+    font-size: 55px;
+  }
+}
+
 .text-body-large {
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1.40;
   letter-spacing: 0.3px;
 }
 
+@media (min-width: 640px) {
+  .text-body-large {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-body-large {
+    font-size: 20px;
+  }
+}
+
 .text-body {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.56;
+}
+
+@media (min-width: 640px) {
+  .text-body {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-body {
+    font-size: 18px;
+  }
 }
 
 /* Button styles */

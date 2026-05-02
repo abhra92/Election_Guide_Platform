@@ -39,7 +39,7 @@ export default function Timeline({ id }: { id?: string }) {
           <span className="inline-block px-4 py-2 mb-6 bg-secondary rounded-[4px] border border-border backdrop-blur-sm text-[16px] font-[400] tracking-[0.72px] text-foreground" style={{ fontFamily: "var(--font-body)" }}>
             TIMELINE
           </span>
-          <h2 className="text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <h2 className="text-[32px] sm:text-[44px] md:text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Indian Election Process
           </h2>
 
@@ -51,8 +51,8 @@ export default function Timeline({ id }: { id?: string }) {
         </div>
 
         <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-[2px] bg-border" />
+          {/* Vertical line - hidden on mobile */}
+          <div className="hidden sm:block absolute left-8 top-0 bottom-0 w-[2px] bg-border" />
 
 
           <div className="space-y-[32px]">
@@ -63,22 +63,20 @@ export default function Timeline({ id }: { id?: string }) {
               return (
                 <div
                   key={step.id}
-                  className={`relative pl-16 sm:pl-24 transition-all duration-300`}
+                  className={`relative pl-0 sm:pl-24 transition-all duration-300`}
                 >
-                  {/* Circle on timeline */}
+                  {/* Circle on timeline - hidden on mobile */}
                   <div
-                    className={`absolute left-3 sm:left-[22px] top-6 w-8 h-8 sm:w-8 sm:h-8 rounded-full border-2 border-background flex items-center justify-center transition-all z-10 ${
+                    className={`hidden sm:flex absolute left-[22px] top-6 w-8 h-8 rounded-full border-2 border-background items-center justify-center transition-all z-10 ${
                       isExpanded
                         ? `bg-neon-green border-none shadow-[0_0_12px_var(--color-neon-green)]`
                         : "bg-secondary border-border"
                     }`}
                   >
-
                     <span
                       className={`text-[12px] font-[500] ${
                         isExpanded ? "text-background" : "text-muted-foreground"
                       }`}
-
                       style={{ fontFamily: "var(--font-body)" }}
                     >
                       {step.id}
@@ -111,13 +109,13 @@ export default function Timeline({ id }: { id?: string }) {
                               <span className="text-[14px] font-[500] text-muted-foreground tracking-[0.28px] uppercase block mb-1" style={{ fontFamily: "var(--font-body)" }}>
                                 Step {step.id} · {step.period}
                               </span>
-                              <h3 className="text-[32px] font-[360] leading-[1.14] tracking-[0.32px] text-foreground" style={{ fontFamily: "var(--font-display)" }}>
+                              <h3 className="text-[22px] sm:text-[26px] md:text-[32px] font-[360] leading-[1.14] tracking-[0.32px] text-foreground" style={{ fontFamily: "var(--font-display)" }}>
                                 {step.title}
                               </h3>
 
                             </div>
                           </div>
-                          <p className="text-[18px] font-[400] leading-[1.56] text-muted-foreground ml-0 sm:ml-[64px]" style={{ fontFamily: "var(--font-body)" }}>
+                          <p className="text-[15px] sm:text-[16px] md:text-[18px] font-[400] leading-[1.56] text-muted-foreground ml-0 sm:ml-[64px]" style={{ fontFamily: "var(--font-body)" }}>
 
                             {step.description}
                           </p>

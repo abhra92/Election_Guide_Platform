@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send } from 'lucide-react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 interface Message {
   id: string;
@@ -9,6 +10,7 @@ interface Message {
 }
 
 export default function ChatBot() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -19,6 +21,7 @@ export default function ChatBot() {
     }
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -29,45 +32,82 @@ export default function ChatBot() {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isVerifying) return;
 
-    const newUserMessage: Message = {
-      id: Date.now().toString(),
-      text: inputValue,
-      sender: 'user',
-      timestamp: new Date()
-    };
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available');
+      return;
+    }
 
-    setMessages(prev => [...prev, newUserMessage]);
-    setInputValue('');
+    setIsVerifying(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      let botResponse = "I can help you understand the Indian election process. Try asking about 'voter id', 'EVM', 'polling booth', or 'eligibility'.";
+    try {
+      const token = await executeRecaptcha('chat_message');
       
-      const lowerInput = newUserMessage.text.toLowerCase();
-      if (lowerInput.includes('voter id') || lowerInput.includes('epic')) {
-        botResponse = "Your EPIC (Electors Photo Identity Card) is your primary voter ID. You can download the digital version (e-EPIC) from the Voter Helpline App or the ECI portal.";
-      } else if (lowerInput.includes('evm') || lowerInput.includes('vvpat')) {
-        botResponse = "EVMs (Electronic Voting Machines) are used to cast your vote. You press the blue button next to your candidate's symbol. The VVPAT machine then prints a slip visible for 7 seconds to verify your choice.";
-      } else if (lowerInput.includes('booth') || lowerInput.includes('where to vote')) {
-        botResponse = "You can find your polling booth on your Voter Information Slip, by searching your EPIC number on the ECI portal, or via the Voter Helpline App.";
-      } else if (lowerInput.includes('eligibility') || lowerInput.includes('who can vote')) {
-        botResponse = "To vote in India, you must be an Indian citizen, at least 18 years old on the qualifying date, and be enrolled in the electoral roll of your constituency.";
-      } else if (lowerInput.includes('checklist') || lowerInput.includes('preparation')) {
-        botResponse = "You can find a complete Voter's Checklist on our main page under the 'Checklist' section. It covers what you need to do before, during, and after Election Day.";
+      // Verify with backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/verify-recaptcha`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: "Verification failed. Please try again.",
+          sender: 'bot',
+          timestamp: new Date()
+        }]);
+        setIsVerifying(false);
+        return;
       }
 
-      const newBotMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: botResponse,
-        sender: 'bot',
+      const newUserMessage: Message = {
+        id: Date.now().toString(),
+        text: inputValue,
+        sender: 'user',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, newBotMessage]);
-    }, 1000);
+
+      setMessages(prev => [...prev, newUserMessage]);
+      setInputValue('');
+      setIsVerifying(false);
+
+      // Simulate bot response
+      setTimeout(() => {
+        let botResponse = "I can help you understand the Indian election process. Try asking about 'voter id', 'EVM', 'polling booth', or 'eligibility'.";
+        
+        const lowerInput = newUserMessage.text.toLowerCase();
+        if (lowerInput.includes('voter id') || lowerInput.includes('epic')) {
+          botResponse = "Your EPIC (Electors Photo Identity Card) is your primary voter ID. You can download the digital version (e-EPIC) from the Voter Helpline App or the ECI portal.";
+        } else if (lowerInput.includes('evm') || lowerInput.includes('vvpat')) {
+          botResponse = "EVMs (Electronic Voting Machines) are used to cast your vote. You press the blue button next to your candidate's symbol. The VVPAT machine then prints a slip visible for 7 seconds to verify your choice.";
+        } else if (lowerInput.includes('booth') || lowerInput.includes('where to vote')) {
+          botResponse = "You can find your polling booth on your Voter Information Slip, by searching your EPIC number on the ECI portal, or via the Voter Helpline App.";
+        } else if (lowerInput.includes('eligibility') || lowerInput.includes('who can vote')) {
+          botResponse = "To vote in India, you must be an Indian citizen, at least 18 years old on the qualifying date, and be enrolled in the electoral roll of your constituency.";
+        } else if (lowerInput.includes('checklist') || lowerInput.includes('preparation')) {
+          botResponse = "You can find a complete Voter's Checklist on our main page under the 'Checklist' section. It covers what you need to do before, during, and after Election Day.";
+        }
+
+        const newBotMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: botResponse,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, newBotMessage]);
+      }, 1000);
+    } catch (error) {
+      console.error('Error verifying reCAPTCHA:', error);
+      setIsVerifying(false);
+    }
   };
 
   return (

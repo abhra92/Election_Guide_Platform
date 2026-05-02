@@ -51,10 +51,10 @@ export default function Quiz({ id }: { id?: string }) {
           <span className="inline-block px-4 py-2 mb-6 bg-secondary rounded-[4px] border border-border backdrop-blur-sm text-[16px] font-[400] tracking-[0.72px] text-foreground" style={{ fontFamily: "var(--font-body)" }}>
             QUIZ
           </span>
-          <h2 className="text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <h2 className="text-[32px] sm:text-[44px] md:text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Test Your Knowledge
           </h2>
-          <p className="text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
+          <p className="text-[16px] sm:text-[18px] md:text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
             How well do you know the Indian election process? Take our quick quiz to find out.
           </p>
         </div>
@@ -70,16 +70,16 @@ export default function Quiz({ id }: { id?: string }) {
               </div>
 
               <div className="flex items-center justify-between mb-10">
-                <span className="text-[14px] font-[500] text-neon-green uppercase tracking-wider">
+                <span className="text-[12px] sm:text-[14px] font-[500] text-neon-green uppercase tracking-wider">
                   Question {currentQuestion + 1} of {quizQuestions.length}
                 </span>
                 <div className="flex items-center gap-2 px-3 py-1 bg-secondary rounded-full border border-border">
                   <Target className="w-4 h-4 text-neon-green" />
-                  <span className="text-[14px] font-[500] text-foreground">Score: {score}</span>
+                  <span className="text-[12px] sm:text-[14px] font-[500] text-foreground">Score: {score}</span>
                 </div>
               </div>
 
-              <h3 className="text-[28px] sm:text-[36px] font-[330] leading-[1.2] text-foreground mb-10" style={{ fontFamily: "var(--font-display)" }}>
+              <h3 className="text-[22px] sm:text-[28px] md:text-[36px] font-[330] leading-[1.2] text-foreground mb-10" style={{ fontFamily: "var(--font-display)" }}>
                 {question.question}
               </h3>
 
@@ -104,7 +104,7 @@ export default function Quiz({ id }: { id?: string }) {
                       onClick={() => handleAnswer(index)}
                       className={`w-full text-left p-6 rounded-[16px] border transition-all duration-300 flex items-center justify-between group ${stateClasses}`}
                     >
-                      <span className="text-[18px] font-[400]" style={{ fontFamily: "var(--font-body)" }}>{option}</span>
+                      <span className="text-[15px] sm:text-[16px] md:text-[18px] font-[400]" style={{ fontFamily: "var(--font-body)" }}>{option}</span>
                       {showResult && isCorrect && <CheckCircle className="w-6 h-6 text-neon-green" />}
                       {showResult && isSelected && !isCorrect && <XCircle className="w-6 h-6 text-red-500" />}
                       {!showResult && (
@@ -136,18 +136,18 @@ export default function Quiz({ id }: { id?: string }) {
               <div className="w-24 h-24 bg-neon-green/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-neon-green/20">
                 <Trophy className="w-12 h-12 text-neon-green" />
               </div>
-              <h3 className="text-[40px] font-[330] text-foreground mb-4" style={{ fontFamily: "var(--font-display)" }}>Quiz Complete!</h3>
-              <p className="text-[20px] text-muted-foreground mb-10" style={{ fontFamily: "var(--font-body)" }}>
+              <h3 className="text-[28px] sm:text-[34px] md:text-[40px] font-[330] text-foreground mb-4" style={{ fontFamily: "var(--font-display)" }}>Quiz Complete!</h3>
+              <p className="text-[16px] sm:text-[18px] md:text-[20px] text-muted-foreground mb-10" style={{ fontFamily: "var(--font-body)" }}>
                 You scored <span className="text-neon-green font-bold">{score}</span> out of <span className="text-foreground">{quizQuestions.length}</span>
               </p>
               
               <div className="grid grid-cols-2 gap-4 mb-10">
                 <div className="p-6 bg-secondary rounded-[16px] border border-border">
-                  <span className="block text-[32px] font-bold text-foreground">{Math.round((score / quizQuestions.length) * 100)}%</span>
+                  <span className="block text-[26px] sm:text-[29px] md:text-[32px] font-bold text-foreground">{Math.round((score / quizQuestions.length) * 100)}%</span>
                   <span className="text-[12px] text-muted-foreground uppercase tracking-widest">Accuracy</span>
                 </div>
                 <div className="p-6 bg-secondary rounded-[16px] border border-border">
-                  <span className="block text-[32px] font-bold text-foreground">{quizQuestions.length}</span>
+                  <span className="block text-[26px] sm:text-[29px] md:text-[32px] font-bold text-foreground">{quizQuestions.length}</span>
                   <span className="text-[12px] text-muted-foreground uppercase tracking-widest">Questions</span>
                 </div>
               </div>

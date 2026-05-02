@@ -25,5 +25,5 @@ build/
 deploy.md
 DESIGN-shopify.md
 schema.sql
-
+.env*
 

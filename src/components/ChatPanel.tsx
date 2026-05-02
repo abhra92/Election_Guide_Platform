@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
   Send,
   Bot,
@@ -232,6 +233,7 @@ function LoadingSkeleton() {
 
 /* ─── Main ChatPanel ────────────────────────────────────── */
 export default function ChatPanel({ topics, selectedTopic, onChatCountChange }: ChatPanelProps) {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "welcome",
@@ -243,6 +245,7 @@ export default function ChatPanel({ topics, selectedTopic, onChatCountChange }: 
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -290,36 +293,75 @@ export default function ChatPanel({ topics, selectedTopic, onChatCountChange }: 
     }, 800);
   }, [selectedTopic, topics]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = inputValue.trim();
-    if (!text) return;
+    if (!text || isLoading || isVerifying) return;
 
-    const userMsg: ChatMessage = {
-      id: `user-${Date.now()}`,
-      role: "user",
-      content: text,
-      timestamp: new Date(),
-    };
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available');
+      return;
+    }
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
+    setIsVerifying(true);
     setIsLoading(true);
 
-    // Simulate response delay
-    setTimeout(() => {
-      const response = getFreeTextResponse(text);
+    try {
+      const token = await executeRecaptcha('chat_panel_message');
+      
+      // Verify with backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/verify-recaptcha`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
 
-      const assistantMsg: ChatMessage = {
-        id: `assistant-${Date.now()}`,
-        role: "assistant",
-        content: response || "",
+      const data = await response.json();
+
+      if (!data.success) {
+        setMessages(prev => [...prev, {
+          id: `assistant-error-${Date.now()}`,
+          role: "assistant",
+          content: "Verification failed. Please try again.",
+          timestamp: new Date()
+        }]);
+        setIsVerifying(false);
+        setIsLoading(false);
+        return;
+      }
+
+      const userMsg: ChatMessage = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        content: text,
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, assistantMsg]);
+      setMessages((prev) => [...prev, userMsg]);
+      setInputValue("");
+      setIsVerifying(false);
+
+      // Simulate response delay
+      setTimeout(() => {
+        const response = getFreeTextResponse(text);
+
+        const assistantMsg: ChatMessage = {
+          id: `assistant-${Date.now()}`,
+          role: "assistant",
+          content: response || "",
+          timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, assistantMsg]);
+        setIsLoading(false);
+        inputRef.current?.focus();
+      }, 1000);
+    } catch (error) {
+      console.error('Error verifying reCAPTCHA:', error);
+      setIsVerifying(false);
       setIsLoading(false);
-      inputRef.current?.focus();
-    }, 1000);
+    }
   };
 
   const handleClear = () => {

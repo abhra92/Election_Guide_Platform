@@ -26,10 +26,10 @@ export default function FAQ({ id }: { id?: string }) {
           <span className="inline-block px-4 py-2 mb-6 bg-secondary rounded-[4px] border border-border backdrop-blur-sm text-[16px] font-[400] tracking-[0.72px] text-foreground" style={{ fontFamily: "var(--font-body)" }}>
             FAQ
           </span>
-          <h2 className="text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
+          <h2 className="text-[32px] sm:text-[44px] md:text-[55px] font-[330] leading-[1.16] tracking-tight text-foreground mb-6" style={{ fontFamily: "var(--font-display)" }}>
             Common Questions
           </h2>
-          <p className="text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
+          <p className="text-[16px] sm:text-[18px] md:text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: "var(--font-body)" }}>
             Find answers to the most commonly asked questions about the Indian election process and voting.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function FAQ({ id }: { id?: string }) {
                       >
                         <HelpCircle className="w-5 h-5" />
                       </div>
-                      <span className="font-[500] text-[18px] text-foreground pr-4" style={{ fontFamily: "var(--font-body)" }}>{item.question}</span>
+                      <span className="font-[500] text-[15px] sm:text-[16px] md:text-[18px] text-foreground pr-4" style={{ fontFamily: "var(--font-body)" }}>{item.question}</span>
                     </div>
                     <ChevronDown
                       className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-300 ${
@@ -107,7 +107,7 @@ export default function FAQ({ id }: { id?: string }) {
                       <span className="inline-block text-[12px] font-[500] text-neon-green bg-neon-green/10 rounded-full px-3 py-1 mb-4 border border-neon-green/20 uppercase tracking-wider">
                         {item.category}
                       </span>
-                      <p className="text-muted-foreground text-[16px] leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{item.answer}</p>
+                      <p className="text-muted-foreground text-[14px] sm:text-[15px] md:text-[16px] leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>{item.answer}</p>
                     </div>
                   )}
                 </div>

@@ -13,13 +13,13 @@ export default function VoterChecklist({ id }: { id?: string }) {
             Checklist
           </span>
           <h2 
-            className="text-[55px] font-[330] leading-[1.00] tracking-tight text-foreground mb-6"
+            className="text-[32px] sm:text-[44px] md:text-[55px] font-[330] leading-[1.00] tracking-tight text-foreground mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Voter's Checklist
           </h2>
           <p 
-            className="text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto"
+            className="text-[16px] sm:text-[18px] md:text-[20px] font-[500] leading-[1.40] tracking-[0.3px] text-muted-foreground max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-body)" }}
           >
             Ensure you're fully prepared for the democratic process. 
@@ -38,7 +38,7 @@ export default function VoterChecklist({ id }: { id?: string }) {
                   <ClipboardList className="w-5 h-5" />
                 </div>
                 <h3 
-                  className="text-[24px] font-[400] tracking-[0.36px] text-foreground"
+                  className="text-[20px] sm:text-[22px] md:text-[24px] font-[400] tracking-[0.36px] text-foreground"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {category.category}
@@ -52,7 +52,7 @@ export default function VoterChecklist({ id }: { id?: string }) {
                       <CheckCircle2 className="w-5 h-5 text-neon-green" />
                     </div>
                     <p 
-                      className="text-[16px] font-[400] leading-[1.50] text-muted-foreground"
+                      className="text-[14px] sm:text-[15px] md:text-[16px] font-[400] leading-[1.50] text-muted-foreground"
                       style={{ fontFamily: "var(--font-body)" }}
                     >
                       {item}
@@ -70,13 +70,13 @@ export default function VoterChecklist({ id }: { id?: string }) {
           </div>
           <div className="flex-1 text-center md:text-left">
             <h4 
-              className="text-[18px] font-[500] text-foreground mb-2"
+              className="text-[16px] sm:text-[17px] md:text-[18px] font-[500] text-foreground mb-2"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Pro Tip: Carry your EPIC card!
             </h4>
             <p 
-              className="text-[16px] text-muted-foreground"
+              className="text-[14px] sm:text-[15px] md:text-[16px] text-muted-foreground"
               style={{ fontFamily: "var(--font-body)" }}
             >
               While other IDs are valid, the Electoral Photo Identity Card (EPIC) makes the verification process much faster at the polling booth.
